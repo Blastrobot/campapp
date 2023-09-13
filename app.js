@@ -9,9 +9,13 @@ const { campgroundSchema, reviewSchema } = require("./schemas");
 const catchAsync = require("./utils/catchAsync");
 const ExpressError = require("./utils/ExpressError");
 const methodOverride = require("method-override");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user");
 
-const campgrounds = require("./routes/campgrounds");
-const reviews = require("./routes/reviews");
+const userRoutes = require("./routes/users");
+const campgroundRoutes = require("./routes/campgrounds");
+const reviewRoutes = require("./routes/reviews");
 
 // We start our connection to our Mongo DB through mongoose
 mongoose.connect("mongodb://localhost:27017/yelp-camp", {
@@ -53,14 +57,23 @@ app.use((req, res, next) => {
     next();
 })
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser()); // Method coming from passport-local-mongoose to serialize the user (how to store the user)
+passport.deserializeUser(User.deserializeUser()); // Method coming from passport-local-mongoose to deserialize the user (how to unstore the user)
+
 // Render from our first Home page
 app.get("/", (req, res) => {
     res.render("home");
 });
 
-app.use("/campgrounds", campgrounds);
+app.use("/", userRoutes);
 
-app.use("/campgrounds/:id/reviews", reviews);
+app.use("/campgrounds", campgroundRoutes);
+
+app.use("/campgrounds/:id/reviews", reviewRoutes);
 
 app.all("*", (req, res, next) => {
     next(new ExpressError("Page not found", 404));
