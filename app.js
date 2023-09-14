@@ -51,11 +51,6 @@ const sessionConfig = {
 }
 app.use(session(sessionConfig))
 app.use(flash());
-app.use((req, res, next) => {
-    res.locals.success = req.flash("success");
-    res.locals.error = req.flash("error");
-    next();
-})
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -63,6 +58,15 @@ passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser()); // Method coming from passport-local-mongoose to serialize the user (how to store the user)
 passport.deserializeUser(User.deserializeUser()); // Method coming from passport-local-mongoose to deserialize the user (how to unstore the user)
+
+// I had this following middleware before the passport.initialize(), passport.session and the rest, and it was not allowing me to show dynamically a logout button when already signed in, because the req.user was coming before all of the necessary from passport i guess
+app.use((req, res, next) => {
+    console.log(req.session);
+    res.locals.currentUser = req.user;
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
+})
 
 // Render from our first Home page
 app.get("/", (req, res) => {
