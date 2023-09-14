@@ -9,12 +9,14 @@
       integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
       crossorigin="anonymous"
     />
-    <title>YelpCamp</title>
+    <title>BlastCamp</title>
   </head>
-
   <body class="d-flex flex-column vh-100">
     <%- include("../partials/navbar") %>
-    <main class="container mt-5"><%- include("../partials/flash") %><%- body %></main>
+    <main class="container mt-5">
+      <%- include("../partials/flash") %>
+      <%- body %>
+    </main>
     <%- include("../partials/footer") %>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
