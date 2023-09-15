@@ -12,7 +12,7 @@ const storage = new CloudinaryStorage({
     cloudinary,
     params: {
         folder: "BlastCamp",
-        allowedFormats: [ "jpeg", "jpg", "png" ]
+        allowed_formats: [ "jpeg", "jpg", "png" ]
     }
 });
 
