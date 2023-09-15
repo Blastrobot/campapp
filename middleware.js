@@ -1,6 +1,7 @@
 const { campgroundSchema, reviewSchema } = require("./schemas.js");
 const ExpressError = require("./utils/ExpressError.js");
 const Campground = require("./models/campground.js");
+const Review = require("./models/review.js");
 
 module.exports.isLoggedIn = (req, res, next) => {
     // console.log("req.user is this:", req.user); // this is there by passport, it is going to be automatically filled in with the deserialized information from the session, so the session store is serialized using passport
@@ -47,5 +48,15 @@ module.exports.isAuthor = async(req, res, next) => {
     // if (campground.author !== req.user._id){
         req.flash("error", "You do not have permission to do that! 😤")
         return res.redirect(`/campgrounds/${campground._id}`); // Don't forget that the return makes sure that if the conditional works, then it will return that to the function and the rest of the code below won't run
+    } next();
+}
+
+module.exports.isReviewAuthor = async(req, res, next) => {
+    const { id, reviewId } = req.params; // First id is the campgroundId (campground route with /:id) and second is the reviewId (review route with /:reviewId)
+    const review = await Review.findById(reviewId);
+    if(!review.author.equals(req.user._id)){
+    // if (campground.author !== req.user._id){
+        req.flash("error", "You do not have permission to do that! 😤")
+        return res.redirect(`/campgrounds/${id}`); // Don't forget that the return makes sure that if the conditional works, then it will return that to the function and the rest of the code below won't run
     } next();
 }
