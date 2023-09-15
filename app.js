@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
+
 const express = require("express"); // Starts our connection with Express
 const app = express(); // Starts our connection with Express
 const path = require("path");
@@ -61,7 +65,7 @@ passport.deserializeUser(User.deserializeUser()); // Method coming from passport
 
 // I had this following middleware before the passport.initialize(), passport.session and the rest, and it was not allowing me to show dynamically a logout button when already signed in, because the req.user was coming before all of the necessary from passport i guess
 app.use((req, res, next) => {
-    console.log(req.session);
+    // console.log(req.session);
     res.locals.currentUser = req.user;
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
@@ -69,15 +73,14 @@ app.use((req, res, next) => {
 })
 
 // Render from our first Home page
+
+app.use("/", userRoutes);
+app.use("/campgrounds", campgroundRoutes);
+app.use("/campgrounds/:id/reviews", reviewRoutes);
+
 app.get("/", (req, res) => {
     res.render("home");
 });
-
-app.use("/", userRoutes);
-
-app.use("/campgrounds", campgroundRoutes);
-
-app.use("/campgrounds/:id/reviews", reviewRoutes);
 
 app.all("*", (req, res, next) => {
     next(new ExpressError("Page not found", 404));
