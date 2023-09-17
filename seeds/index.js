@@ -31,6 +31,10 @@ const seedDB = async () => {
       description:
         "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident aliquam mollitia impedit eum facilis harum voluptas a quidem id similique, ad beatae facere cupiditate, est eius aliquid tenetur quasi dolorem.",
       price,
+      geometry: {
+        type: "Point",
+        coordinates: [-3.68, 40.4]
+      },
       images: [
         {
           url: 'https://res.cloudinary.com/dfhfrk78e/image/upload/v1694787677/BlastCamp/wz7qyddhl0cyrhuqvctw.png',
@@ -40,10 +44,6 @@ const seedDB = async () => {
           url: 'https://res.cloudinary.com/dfhfrk78e/image/upload/v1694787677/BlastCamp/j2nqsx8fy207l3zmzoeq.png',
           filename: 'BlastCamp/j2nqsx8fy207l3zmzoeq',
         },
-        {
-          url: 'https://res.cloudinary.com/dfhfrk78e/image/upload/v1694787677/BlastCamp/umkgzthuj0jtsvlofjaq.png',
-          filename: 'BlastCamp/umkgzthuj0jtsvlofjaq',
-        }
       ]
     });
     await camp.save();
