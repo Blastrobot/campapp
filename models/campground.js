@@ -26,7 +26,18 @@ const CampgroundSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: "Review"
         }
-    ]
+    ],
+    geometry: {
+        type: {
+            type: String,
+            enum: ["Point"],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    }
 });
 
 // This mongoose Middleware is to have access to the object that has been deleted, that way we can access references, for example, any review that might've been done on a camp, we can then use the IDs for those reviews, on the deleted camp, to also delete the reviews

@@ -1,5 +1,8 @@
 const Campground = require("../models/campground");
 const { cloudinary } = require("../cloudinary");
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geocodingService = mbxGeocoding({ accessToken: mapBoxToken });
 
 module.exports.index = async (req, res) => {
     const campgrounds = await Campground.find({});
@@ -12,11 +15,16 @@ module.exports.renderNewForm = (req, res) => {
 
 module.exports.createCampground = async (req, res) => {
     // if (!req.body.campground) throw new ExpressError("Invalid campground data!", 400) // Even tho we got a validation on the client side, there's the possibility to do a POST method, through Postman for example, and that will still make an empty campground, that's why we need this line
+    const geoData = await geocodingService.forwardGeocode({
+        query: req.body.campground.location,
+        limit: 1
+    }).send()
     const campground = new Campground(req.body.campground);
+    campground.geometry = geoData.body.features[0].geometry;
     campground.images = req.files.map(f => ({ url: f.path, filename: f.filename })); // Mapping over teh array that's been added to req.files thanks to Multer middleware
     campground.author = req.user._id;
     await campground.save();
-    // console.log("LOG COMING FROM CAMPGROUNDS ROUTES, THE SAVED CAMPGROUND INFO:", campground);
+    console.log("LOG OF THE SAVED CAMPGROUND INFO:", campground);
     req.flash("success", "New campground was successfuly made! 🥳")
     res.redirect(`/campgrounds/${campground._id}`);
 }
