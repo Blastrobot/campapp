@@ -16,6 +16,7 @@ const methodOverride = require("method-override");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
+const mongoSanitize = require("express-mongo-sanitize");
 
 const userRoutes = require("./routes/users");
 const campgroundRoutes = require("./routes/campgrounds");
@@ -42,13 +43,18 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use("/public", express.static(path.join(__dirname, "public")));
+app.use(mongoSanitize({
+    replaceWith: "_"
+}));
 
 const sessionConfig = {
+    name: "bestSessionEver",
     secret: "possiblenotagoodsecret",
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
+        // secure: true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
@@ -66,6 +72,7 @@ passport.deserializeUser(User.deserializeUser()); // Method coming from passport
 // I had this following middleware before the passport.initialize(), passport.session and the rest, and it was not allowing me to show dynamically a logout button when already signed in, because the req.user was coming before all of the necessary from passport i guess
 app.use((req, res, next) => {
     // console.log(req.session);
+    // console.log(req.query);
     res.locals.currentUser = req.user;
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
