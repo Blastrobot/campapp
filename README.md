@@ -45,6 +45,6 @@ Visit [http://localhost:3000](http://localhost:3000) in your browser
 
 ### Contributors
 
-<a href="https://github.com/blastrobot/upendo_festival/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=blastrobot/upendo_festival" />
+<a href="https://github.com/blastrobot/camp-app/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=blastrobot/camp-app" />
 </a>
