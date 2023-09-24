@@ -15,6 +15,8 @@ _Launching soon!_
 
 ## Demo
 
+![image](https://github.com/Blastrobot/camp-app/assets/114672545/8491f165-7769-40cc-9080-d2dae5c11f32)
+
 ## Stack
 
 -   Bootstrap
