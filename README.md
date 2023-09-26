@@ -26,6 +26,7 @@ _Launching soon!_
 -   Mongo
 -   Mongoose
 -   Cloudinary
+-   Mapbox
 
 ## Getting started
 
