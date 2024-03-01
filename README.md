@@ -1,4 +1,4 @@
-# Upendo Music Festival
+# BlastCamp
 
 🥳 Welcome to BlastCamp, get ready to enjoy the best camping experience, discover, explore and create! 🎹 <br>
 
